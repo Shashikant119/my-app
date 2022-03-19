@@ -31,6 +31,18 @@ class UsersController extends Controller
         return view('users.users-view',compact('users'));
     }
 
+    /*$cache_key = 'user_data';
+    if(Cache::has($cache_key)){
+        $users = Cache::get($cache_key);
+    }else{
+        $user = User::all();
+        $suers = $user;
+        try{
+            Cache::put($cache_key, $users, now()->addMinutes(5));
+        }catch(\Exception $e){}
+    }
+    return view('users.index', compact('users'));*/
+
     public function countuser($value='')
     {
         $count = 0;
