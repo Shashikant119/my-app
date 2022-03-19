@@ -1,0 +1,11 @@
+@extends('My-App.master')
+@section('title')
+   My-App
+@endsection
+@section('header')
+  @include('My-App.header')
+  @include('My-App.left-side-bar')
+@endsection
+@section('content')
+@include('My-App.customer-list')
+@endsection
