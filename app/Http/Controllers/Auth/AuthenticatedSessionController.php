@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Auth;
 class AuthenticatedSessionController extends Controller
 {
     /**
-     * Display the login view.
+     * Display the login view. 
      *
      * @return \Illuminate\View\View
      */
