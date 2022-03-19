@@ -11,6 +11,6 @@ class UsersExport implements FromCollection
     */
     public function collection()
     {
-        //
+        return view('excel.user');
     }
 }

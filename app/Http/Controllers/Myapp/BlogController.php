@@ -8,6 +8,10 @@ use DB;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Cache;
 use App\Models\User;
+use Illuminate\Support\Facades\URL;
+use Illuminate\Support\Str;
+use Validator;
+use Illuminate\Support\Facades\Auth;
 
 class BlogController extends Controller
 {
@@ -141,48 +145,46 @@ class BlogController extends Controller
       }
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
+    public function postview(Request $request)
     {
-        //
-    }
+        $view_data = [];
+        $url = URL::current();
+        $urlpost = (explode("post/",$url));
+        $cturl = $urlpost[1];
+        $view_data['cturl'] = $cturl;
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
+        return view('post.index')->with($view_data);
     }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
+    public function postsave(Request $request)
     {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
+      $status = 'failure';
+      $message = 'Failure to Add Post';
+      DB::beginTransaction();
+      try {
+          $title = trim($request->title);
+          if (!empty($request->title)) {
+            $data = [
+              'title' => $title,
+              'slug' => Str::slug($title),
+              'metaTitle' => Str::slug($title),
+              'content' => !empty($request->post)?$request->post:'',
+              'authorId' => 1,
+              'createdAt' => date('Y-m-d H:i:s'),
+              'updatedAt' => date('Y-m-d H:i:s')
+            ];
+            DB::table('post')->insert($data);
+            $status = 'success';
+            $message = 'Post Add successfully!';
+        }
+      } catch (\Exception $e) {
+        $message = $e->getMessage();
+        DB::rollback();
+      }finally{
+        return response()->json([
+          'status' => $status,
+          'message' => $message,
+          'errors' => []
+        ]);
+      }
     }
 }

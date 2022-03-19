@@ -40,7 +40,13 @@ Route::controller(BlogController::class)->group(function () {
     Route::get('/blog', 'index');
     Route::post('/save', 'registerbloguser');
     Route::get('/customer', 'customer');
+    Route::group(['prefix'=>'post'], function(){
+        Route::get('/index', 'postview');
+        Route::post('/save', 'postsave')->name('post.save');
+    });
 });
+
+
 
 
 

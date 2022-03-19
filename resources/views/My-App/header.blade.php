@@ -1,3 +1,8 @@
+<style type="text/css">
+    input.form-control {
+    margin-left: -1px;
+}
+</style>
 <nav class="navbar fixed-top navbar-expand-md navbar-dark bg-primary mb-3">
     <div class="flex-row d-flex">
         <button type="button" class="navbar-toggler mr-2 " data-toggle="offcanvas" title="Toggle responsive left sidebar">
@@ -16,11 +21,21 @@
             <li class="nav-item">
                 <a class="nav-link" href="/blog">Blog</a>
             </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/post/index">Post</a>
+            </li>
         </ul>
         <ul class="navbar-nav ml-auto">
+            @php //  echo $cturl; @endphp
+            @if(@$cturl == "index")
+            <li class="nav-item">
+                <a class="nav-link" href="#myAlert" data-toggle="modal">Add-New-Post</a>
+            </li>
+            @else
             <li class="nav-item">
                 <a class="nav-link" href="#myAlert" data-toggle="modal">Register</a>
             </li>
+            @endif
             <li class="nav-item">
                 <a class="nav-link" href="" data-target="#myModal" data-toggle="modal">Login</a>
             </li>
