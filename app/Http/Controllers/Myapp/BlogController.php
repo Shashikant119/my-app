@@ -118,7 +118,7 @@ class BlogController extends Controller
         return redirect('/customer')->withInput();
         // /toastr()->success('Data has been saved successfully!');
     }
-
+// this code test purpose
     public function status(Request $request)
     {
       $status = 'failure';
@@ -144,37 +144,46 @@ class BlogController extends Controller
         ]);
       }
     }
-
+//end
     public function postview(Request $request)
     {
         $view_data = [];
         $url = URL::current();
         $urlpost = (explode("post/",$url));
         $cturl = $urlpost[1];
+
+        $view_data['post'] = DB::table('post')->get();
         $view_data['cturl'] = $cturl;
 
         return view('post.index')->with($view_data);
     }
     public function postsave(Request $request)
     {
+      $p = $request->get('post');
+      DD($p);  
       $status = 'failure';
       $message = 'Failure to Add Post';
       DB::beginTransaction();
       try {
           $title = trim($request->title);
-          if (!empty($request->title)) {
+          if(!empty($request->title && $request->post)){
             $data = [
               'title' => $title,
               'slug' => Str::slug($title),
               'metaTitle' => Str::slug($title),
+              'summary' => "summary",
+              'published' => 0,
+              'parentId' => 1,
+              'publishedAt' => date('Y-m-d H:i:s'),
               'content' => !empty($request->post)?$request->post:'',
-              'authorId' => 1,
+              'authorId' => Auth::user()->id,
               'createdAt' => date('Y-m-d H:i:s'),
               'updatedAt' => date('Y-m-d H:i:s')
             ];
-            DB::table('post')->insert($data);
+            DB::table('post')->insert($data);   
             $status = 'success';
             $message = 'Post Add successfully!';
+            DB::commit();
         }
       } catch (\Exception $e) {
         $message = $e->getMessage();

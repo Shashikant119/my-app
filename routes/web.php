@@ -43,6 +43,7 @@ Route::controller(BlogController::class)->group(function () {
     Route::group(['prefix'=>'post'], function(){
         Route::get('/index', 'postview');
         Route::post('/save', 'postsave')->name('post.save');
+        Route::get('/{slug}' ,'postview')->name('post.view');
     });
 });
 

@@ -1,3 +1,6 @@
+ <style type="text/css">
+     .post{border: 1px solid;border-radius: 10px;padding: 10px;}
+ </style>
  <!--/col-->
 <main class="col main pt-5 mt-3 h-100 overflow-auto">
     <a id="more"></a>
@@ -6,17 +9,20 @@
         @if($errors->any())
            {!! implode('', $errors->all('<div style="color:red;">:message</div>')) !!}
         @endif
-        <div class="col-md-6 text-center">
-         <div class="card-deck">
-            <div class="card card-inverse card-success text-center">
-                <div class="card-body">
-                    <blockquote class="card-blockquote">
-                        <p>It's really good news that the new Bootstrap 4 now has support for CSS 3 flexbox.</p>
-                        <footer>Makes flexible layouts <cite title="Source Title">Faster</cite></footer>
-                    </blockquote>
-                </div>
-            </div>
+    </div>
+
+    <div class="container">
+      <div class="row">
+        @isset($post)
+        @foreach($post as $key => $value)
+        <div class="col-sm-4">
+          <div class="post">
+            <h3><a href="{{url('/')}}/post/{{$value->slug}}">{{ucwords(substr(@$value->title,0 ,40))}}</a></h3>
+            <p>{!! substr(@$value->content,0, 100) !!}</p>
+          </div>
         </div>
+        @endforeach
+        @endisset
       </div>
     </div>
     <!--/row-->
@@ -25,18 +31,19 @@
 <!-- psot page model -->
 <div class="modal fade" id="myAlert" tabindex="-1" role="dialog">
     <div class="modal-dialog" role="document">
-        <div class="modal-content">
+        <div class="modal-content" style="margin-left: -153px;width: 800px;">
             <div class="modal-header">
                 <h4 class="modal-title" id="myModalLabel">Add New Post</h4>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                        <span aria-hidden="true">×</span>
+                    <span aria-hidden="true">×</span>
                     <span class="sr-only">Close</span>
                 </button>
             </div>
             <div class="modal-body">
                 <form>
                    <input type="text" name="title" id="title" class="form-control" placeholder="Title">
-                   <textarea type="text" id="post" rows="4" name="post" class="form-control" placeholder="Post...."></textarea> 
+                   <textarea class="form-control" id="post" rows="4" name="post"></textarea> 
+                   {{--<textarea class="post form-control" id="messageArea" rows="4" name="post"></textarea> --}}
                    <input value="Submit" class="btn btn-primary add-btn">
                 </form>   
             </div>
@@ -62,7 +69,7 @@
             	post:post
             },
             success: function (response) {
-                if (response.status == 'OK') {
+                if (response.status == 'success') {
                     Swal.fire({
                        position: 'top-end',
                        title: response.message,
@@ -84,3 +91,13 @@
 	});
 </script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<!-- ckeditor -->
+<script type="text/javascript" src="{{url('/')}}/assets/ckeditor/ckeditor.js"></script> 
+<script type="text/javascript">
+ CKEDITOR.replace( 'messageArea',
+ {
+  customConfig : 'config.js',
+  toolbar : 'simple'
+  });
+</script> 
+</script>
