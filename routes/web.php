@@ -44,11 +44,10 @@ Route::controller(BlogController::class)->group(function () {
         Route::get('/index', 'postview');
         Route::post('/save', 'postsave')->name('post.save');
         Route::get('/{slug}' ,'postview')->name('post.view');
+        Route::get('/edit/{id}', 'postedit')->name('post.edit');
+        Route::post('/store/', 'storepost')->name('post.store');
     });
 });
-
-
-
 
 
 Route::controller(IndexController::class)->group(function () {

@@ -153,14 +153,13 @@ class BlogController extends Controller
         $cturl = $urlpost[1];
 
         $view_data['post'] = DB::table('post')->get();
+        //DD($view_data);
         $view_data['cturl'] = $cturl;
 
         return view('post.index')->with($view_data);
     }
     public function postsave(Request $request)
     {
-      $p = $request->get('post');
-      DD($p);  
       $status = 'failure';
       $message = 'Failure to Add Post';
       DB::beginTransaction();
@@ -195,5 +194,61 @@ class BlogController extends Controller
           'errors' => []
         ]);
       }
+    }
+
+    public function postedit($id)
+    {
+        $view_data = [];
+        $url = URL::current();
+        $urlpost = (explode("post/",$url));
+        $ctur = (explode("/", $urlpost[1]));
+        $cturl = $ctur[0];
+        $view_data['post'] = DB::table('post')->get();
+        $view_data['cturl'] = $cturl;
+
+        
+        $view_data['editdata'] = DB::table('post')->find($id);
+        
+        //DD($view_data);
+        return view('post.index')->with($view_data);
+    }
+    public function storepost(Request $request)
+    {
+        $id = $request->get('id');
+        
+        $status = 'failure';
+        $message = 'Failure to Add Post';
+          DB::beginTransaction();
+          try {
+              $title = trim($request->title);
+              if(!empty($request->title && $request->post)){
+                $data = [
+                  'title' => $title,
+                  'slug' => Str::slug($title),
+                  'metaTitle' => Str::slug($title),
+                  'summary' => "summary",
+                  'published' => 0,
+                  'parentId' => 1,
+                  'publishedAt' => date('Y-m-d H:i:s'),
+                  'content' => !empty($request->post)?$request->post:'',
+                  'authorId' => Auth::user()->id,
+                  'createdAt' => date('Y-m-d H:i:s'),
+                  'updatedAt' => date('Y-m-d H:i:s')
+                ];
+                DB::table('post')->where('id', $id)->update($data);   
+                $status = 'success';
+                $message = 'Post Add successfully!';
+                DB::commit();
+            }
+          } catch (\Exception $e) {
+            $message = $e->getMessage();
+            DB::rollback();
+          }finally{
+            return response()->json([
+              'status' => $status,
+              'message' => $message,
+              'errors' => []
+            ]);
+        }
     }
 }

@@ -19,6 +19,7 @@
           <div class="post">
             <h3><a href="{{url('/')}}/post/{{$value->slug}}">{{ucwords(substr(@$value->title,0 ,40))}}</a></h3>
             <p>{!! substr(@$value->content,0, 100) !!}</p>
+            <p class="text-right" style="margin-bottom: 0px;"><a href="{{url('/')}}/post/edit/{{$value->id}}">Edit</a></p>
           </div>
         </div>
         @endforeach

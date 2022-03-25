@@ -25,6 +25,10 @@
       <li><a href="/my-app">My-App</a></li>
     </ul>
     <ul class="nav navbar-nav navbar-right">
+      <li style="margin-right: 0px; margin-top: 7px;">
+        <input type="search" name="serach" placeholder="Search" id="search" class="form-control search">
+      </li>
+      <li style="margin-right: 10px; margin-left: 0px; margin-top: 7px;"><button class="btn btn-primary btn-search">Search</button></li>
       @if(Auth::check())
       <li><form method="POST" action="{{ route('logout') }}" class="logout">
           @csrf
@@ -39,5 +43,13 @@
   </div>
 </nav>  
 @yield('content')
+
+<script type="text/javascript">
+  $(document).on("click", ".btn-search", function(event){
+    event.preventDefault();
+    var search = $('#search').val();
+    alert(search);
+  });
+</script>
 </body>
 </html>
