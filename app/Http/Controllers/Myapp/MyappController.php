@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Myapp;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class MyappController extends Controller
 {
@@ -14,7 +15,13 @@ class MyappController extends Controller
      */
     public function myapp()
     {
-        return view('My-App.index');
+        $view_data['menuname'] = DB::table('menu')->select('menu_name', 'parent_id', 'menu_id')->get();
+        
+
+        
+       // DD($menuname);
+
+        return view('My-App.index')->with($view_data);
     }
 
     /**

@@ -13,7 +13,7 @@
     .logout a{margin-right: 22px;color: #fff;}
   </style>
 </head>
-<body>
+<body>  
 <nav class="navbar navbar-inverse">
   <div class="container-fluid">
     <div class="navbar-header">

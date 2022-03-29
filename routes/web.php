@@ -6,6 +6,7 @@ use App\Http\Controllers\Myapp\MyappController;
 use App\Http\Controllers\Myapp\BlogController;
 use App\Http\Controllers\Ecommerce\IndexController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\MenuController;
 
 /*
 |--------------------------------------------------------------------------
@@ -67,4 +68,9 @@ Route::get('/products', [ProductController::class, 'productsapi'])->name('produc
 
 
 Route::get('/count',[UsersController::class, 'countuser']);
+
+
+//menu multiple
+
+Route::get('/menu', [MenuController::class, 'getMenu']);
 

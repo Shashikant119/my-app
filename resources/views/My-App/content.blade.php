@@ -19,6 +19,23 @@
         Are you ready for Bootstap 4? It's the 4th generation of this popular responsive framework. Bootstrap 4 will include some interesting 
         new features such as flexbox, 5 grid sizes (now including xl), cards, `em` sizing, CSS normalization (reboot) and larger font
         sizes.
+        <br /> <br />
+
+
+        @php
+        $data = array('0','2');
+        foreach ($menuname as $key => $value) {
+            if($value->parent_id == 0)
+            {
+                print_r($value->menu_name);
+                echo '<br>';
+            }     
+        }
+        @endphp
+       
+
+       
+
     </p>
 </main>
   
