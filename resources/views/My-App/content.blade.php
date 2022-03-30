@@ -21,21 +21,6 @@
         sizes.
         <br /> <br />
 
-
-        @php
-        $data = array('0','2');
-        foreach ($menuname as $key => $value) {
-            if($value->parent_id == 0)
-            {
-                print_r($value->menu_name);
-                echo '<br>';
-            }     
-        }
-        @endphp
-       
-
-       
-
     </p>
 </main>
   

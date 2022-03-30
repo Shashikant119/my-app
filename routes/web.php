@@ -30,6 +30,8 @@ Route::get('/dashboard', function () {
 require __DIR__.'/auth.php';
 
 Route::get('/users-list',[UsersController::class, 'index'])->name('users-list');
+
+Route::get('/menu-list', [UsersController::class, 'menulist'])->name('menu.list');
 //group prefixes route call
 
 Route::controller(MyappController::class)->group(function () {

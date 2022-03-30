@@ -1,5 +1,6 @@
+
 @if ((count($menu->children) > 0) AND ($menu->parent_id > 0))
-<li class="nav-item dropdown">
+<li class="nav-item dropdown" id="dropdown">
     <a href="{{ url($menu->slug) }}" class="nav-link dropdown-toggle" role="button" data-toggle="dropdown">
         {{ $menu->menu_title }}
         @if(count($menu->children) > 0) 
@@ -8,6 +9,7 @@
     </a>
     @else
 <li class="nav-item @if($menu->parent_id === 0 && count($menu->children) > 0) dropdown @endif">
+
     <a href="{{ url($menu->slug) }}" class="nav-link dropdown-toggle" data-toggle="dropdown">
         {{ $menu->menu_title }} 
         @if(count($menu->children) > 0) 
@@ -23,3 +25,4 @@
     </ul>
     @endif
 </li>
+

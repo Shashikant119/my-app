@@ -1,3 +1,4 @@
+
 @if ((count($menu->children) > 0) AND ($menu->parent_id > 0))
 <li class="nav-item dropdown">
     <a href="{{ url($menu->slug) }}" class="nav-link dropdown-toggle" role="button" data-toggle="dropdown">
@@ -23,3 +24,6 @@
     </ul>
     @endif
 </li>
+
+
+<!-- copy memu -->

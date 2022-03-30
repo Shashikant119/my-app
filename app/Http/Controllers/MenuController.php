@@ -10,6 +10,7 @@ class MenuController extends Controller
     {
         $menu = new \App\Models\Menu;
         $menuList = $menu->tree();
+        
         return view('multiplemenu.index')->with('menulist', $menuList);
     }
 }

@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Myapp;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Models\Menu;
+use App\Models\Navbar;
 
 class MyappController extends Controller
 {
@@ -15,13 +17,12 @@ class MyappController extends Controller
      */
     public function myapp()
     {
-        $view_data['menuname'] = DB::table('menu')->select('menu_name', 'parent_id', 'menu_id')->get();
-        
+        //model
+        $menu = new \App\Models\Navbar;
+        $menus = $menu->treemenu();
+        DD($menus);
 
-        
-       // DD($menuname);
-
-        return view('My-App.index')->with($view_data);
+        return view('My-App.index', compact('menus'));
     }
 
     /**

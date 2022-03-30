@@ -12,6 +12,7 @@ use Maatwebsite\Excel\Facades\Excel;
 
 class UsersController extends Controller
 {
+    protected $records_per_page = 10;
     /**
      * Display a listing of the resource.
      *
@@ -57,71 +58,40 @@ class UsersController extends Controller
         //DD($countuser);
     }
 
-    
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+    //menu list with ajax
+    public function menulist(Request $request)
     {
-        //
-    }
+        $view_data = [];
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
+        if (!$request->ajax()) {
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
+        return view('users.menu')->with($view_data);
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
+        } else {
+        $page = $request->page;
+        $sort_by = $request->sort_by;
+        $sort_order = $request->sort_order;
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
+        $query = DB::table('menus');
+        $query->selectRaw('*');
+        $query->where('parent_id','=','0');
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
+        $query->orderBy($sort_by, $sort_order);
+
+        $records = $query->paginate($this->records_per_page);
+
+        $record_starts = $this->records_per_page * ($page - 1) + 1;
+        $record_ends = $this->records_per_page * ($page - 1) + count($records);
+
+        $multiple = DB::table('menus')->get();
+        $view_data['multiplem'] = $multiple;
+
+        $view_data['records'] = $records;
+        $view_data['page'] = $page;
+        $view_data['record_starts'] = $record_starts;
+        $view_data['record_ends'] = $record_ends;
+       
+        return view('users.menu_list')->with($view_data);
+        }
     }
 }
