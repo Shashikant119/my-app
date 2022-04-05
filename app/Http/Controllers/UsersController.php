@@ -12,7 +12,7 @@ use Maatwebsite\Excel\Facades\Excel;
 
 class UsersController extends Controller
 {
-    protected $records_per_page = 10;
+    protected $records_per_page = 100;
     /**
      * Display a listing of the resource.
      *
@@ -79,6 +79,7 @@ class UsersController extends Controller
         $query->orderBy($sort_by, $sort_order);
 
         $records = $query->paginate($this->records_per_page);
+
 
         $record_starts = $this->records_per_page * ($page - 1) + 1;
         $record_ends = $this->records_per_page * ($page - 1) + count($records);

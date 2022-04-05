@@ -7,9 +7,12 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Models\Menu;
 use App\Models\Navbar;
+use App\Models\Clanguage;
+use App\Models\Codeslg;
 
 class MyappController extends Controller
 {
+    protected $records_per_page = 100;
     /**
      * Display a listing of the resource.
      *
@@ -25,69 +28,130 @@ class MyappController extends Controller
         return view('My-App.index', compact('menus'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+    ///multiple language select
+    public function multiplelanguage(Request $request)
+    { 
+        $view_data = []; 
+        $data = Clanguage::all();
+
+        $view_data['data'] = $data;
+          
+        /*foreach ($data as $key => $value) {
+            
+            $da = json_decode($value->cat);
+             
+            foreach($da as $value){
+                print_r($value);
+                echo "<br />";
+            }
+            echo $key."<br />";
+        }*/
+
+        // $view_data['datacat'] = $da;
+        
+        $lang = DB::table('codeslgs')->select('language')->get();
+        $view_data['language'] = $lang;
+        return view('multiplelg.index')->with($view_data);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
+    public function multiplelanguagestore(Request $request)
     {
-        //
+        $input = $request->all();
+        Clanguage::create($input);
+        toastr()->success('Data has been saved successfully!');
+        return redirect('/multi')->withInput();
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
+    //add language 
+    public function addlanguage()
     {
-        //
+        $datest[''] = '';
+        $getdata = DB::table('codeslgs')->get();
+        foreach ($getdata as $key => $value) {
+           $st = $value->language;
+        }
+        $view_data['datest'] = $st;
+
+        //DD($view_data);
+        return view('multiplelg.addlg')->with($view_data);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
+
+    public function savelanguage(Request $request)
     {
-        //
+        $data = $request->all();
+
+        
+        $im = $request->get('language');
+
+        $lang = explode(" ",$im);
+        
+        $pushdata = json_encode($lang);
+        //DD($lang);
+        $array = array(
+          'language' => $pushdata
+        );
+        $getdata = DB::table('codeslgs')->select('language')->get();
+
+        $view_data['language'] = $getdata;
+
+        DB::table('codeslgs')->where('id', 1)->update($array);
+         
+        toastr()->success('Data has been saved successfully!');
+        return redirect('/multi')->withInput();
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
+    //learn1 start here 
+
+    public function index(Request $request)
     {
+
+        $view_data = [];
+        if(!$request->ajax()){
+            return view('learn1.index')->with($view_data);
+        }else{
+            $data = Clanguage::all();
+            $view_data['data'] = $data;
+            $lang = DB::table('codeslgs')
+            ->select('language')
+            ->orderBy('id')
+            ->get();
+            $view_data['language'] = $lang;
+            return view('learn1.list')->with($view_data);
+        }
+
         //
+
+       /* $view_data = [];
+
+        if (!$request->ajax()) {
+
+        return view('learn1.index')->with($view_data);
+
+        } else {
+        $page = $request->page;
+        $sort_by = $request->sort_by;
+        $sort_order = $request->sort_order;
+
+        $query = DB::table('codeslgs');
+        $query->selectRaw('*');
+
+        $query->orderBy($sort_by, $sort_order);
+
+        $records = $query->paginate($this->records_per_page);
+
+        $record_starts = $this->records_per_page * ($page - 1) + 1;
+        $record_ends = $this->records_per_page * ($page - 1) + count($records);
+
+        $view_data['records'] = $records;
+        $view_data['page'] = $page;
+        $view_data['record_starts'] = $record_starts;
+        $view_data['record_ends'] = $record_ends;
+        //p($view_data);
+
+        return view('learn1.list')->with($view_data);
+        }*/
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
-    }
+    
 }

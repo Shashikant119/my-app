@@ -7,6 +7,11 @@
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+  <!-- multiple select -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.13/js/bootstrap-multiselect.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.13/css/bootstrap-multiselect.css" />
+
   <style type="text/css">
     .logout{margin-top: 10px;}
     .logout a:hover {color: blue;text-decoration: none;font-size: 15px;}
@@ -23,6 +28,9 @@
       <li class="active"><a href="#">Dashboard</a></li>
       <li><a href="{{route('users-list')}}">Users</a></li>
       <li><a href="/my-app">My-App</a></li>
+      <li><a href="/multi">C-Language</a></li>
+      <li><a href="/add-lag">Add-Language</a></li>
+      <li><a href="/learn1">learn1</a></li>
     </ul>
     <ul class="nav navbar-nav navbar-right">
       <li style="margin-right: 0px; margin-top: 7px;">

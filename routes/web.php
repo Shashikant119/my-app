@@ -36,7 +36,17 @@ Route::get('/menu-list', [UsersController::class, 'menulist'])->name('menu.list'
 
 Route::controller(MyappController::class)->group(function () {
     Route::get('/my-app', 'myapp');
-
+    Route::group(['prefix' => 'multi'], function(){
+       Route::get('/' ,'multiplelanguage')->name('multi');
+       Route::post('/save', 'multiplelanguagestore')->name('multi.save');
+    });
+    Route::group(['prefix' => 'add-lag'], function(){
+        Route::get('/', 'addlanguage')->name('add.lag');
+        Route::post('/save', 'savelanguage')->name('add-lag.save');
+    });
+    Route::group(['prefix' => 'learn1'], function(){
+        Route::get('/', 'index')->name('learn1');
+    });
 });
 
 Route::controller(BlogController::class)->group(function () {
