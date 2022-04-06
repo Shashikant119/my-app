@@ -9,6 +9,7 @@ use App\Models\Menu;
 use App\Models\Navbar;
 use App\Models\Clanguage;
 use App\Models\Codeslg;
+use Illuminate\Support\Facades\Session;
 
 class MyappController extends Controller
 {
@@ -119,38 +120,32 @@ class MyappController extends Controller
             $view_data['language'] = $lang;
             return view('learn1.list')->with($view_data);
         }
+    }
 
-        //
+    //learn2
+    public function __construct(Request $request)
+    {
+        $this->data = DB::table('user_app')->get();
+        $this->id = $request->id;
+        $this->name = $request->name;
+        $this->username = "John Jeny";
+        $data = array('java', 'python', 'laravel', 'css', 'javascript', 'zend', 'wordpress', 'jquery', 'sql', 'progress', 'bootstrap');
+        $this->code = $data;
+    }
 
-       /* $view_data = [];
+    public function learn2(Request $request)
+    {
+        $d = $this->code;
+        //DD($d);
+        foreach ($d as $key => $value) {
+           echo $key++.' '.$value;
+           echo "<br>";
+        }
+    }
 
-        if (!$request->ajax()) {
-
-        return view('learn1.index')->with($view_data);
-
-        } else {
-        $page = $request->page;
-        $sort_by = $request->sort_by;
-        $sort_order = $request->sort_order;
-
-        $query = DB::table('codeslgs');
-        $query->selectRaw('*');
-
-        $query->orderBy($sort_by, $sort_order);
-
-        $records = $query->paginate($this->records_per_page);
-
-        $record_starts = $this->records_per_page * ($page - 1) + 1;
-        $record_ends = $this->records_per_page * ($page - 1) + count($records);
-
-        $view_data['records'] = $records;
-        $view_data['page'] = $page;
-        $view_data['record_starts'] = $record_starts;
-        $view_data['record_ends'] = $record_ends;
-        //p($view_data);
-
-        return view('learn1.list')->with($view_data);
-        }*/
+    public function learn3(Request $request)
+    {
+        
     }
 
     

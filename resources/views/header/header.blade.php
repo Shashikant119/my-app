@@ -30,7 +30,9 @@
       <li><a href="/my-app">My-App</a></li>
       <li><a href="/multi">C-Language</a></li>
       <li><a href="/add-lag">Add-Language</a></li>
-      <li><a href="/learn1">learn1</a></li>
+      <li><a href="/learn1?hjj-admin-user-lis=asd||||||sdjfkdjs-userlist">learn1</a></li>
+      <li><a href="/learn2">learn2</a></li>
+      <li><a href="/learn3">learn3</a></li>
     </ul>
     <ul class="nav navbar-nav navbar-right">
       <li style="margin-right: 0px; margin-top: 7px;">

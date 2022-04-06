@@ -47,6 +47,12 @@ Route::controller(MyappController::class)->group(function () {
     Route::group(['prefix' => 'learn1'], function(){
         Route::get('/', 'index')->name('learn1');
     });
+    Route::group(['prefix' => 'learn2'], function(){
+        Route::get('/', 'learn2')->name('learn2');
+    });
+    Route::group(['prefix' => 'learn3'], function(){
+        Route::get('/', 'learn3')->name('learn2');
+    });
 });
 
 Route::controller(BlogController::class)->group(function () {
