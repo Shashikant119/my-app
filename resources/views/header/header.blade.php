@@ -33,6 +33,7 @@
       <li><a href="/learn1?hjj-admin-user-lis=asd||||||sdjfkdjs-userlist">learn1</a></li>
       <li><a href="/learn2">learn2</a></li>
       <li><a href="/learn3">learn3</a></li>
+      <li><a href="/learn4?post-cate-products">learn4</a></li>
     </ul>
     <ul class="nav navbar-nav navbar-right">
       <li style="margin-right: 0px; margin-top: 7px;">

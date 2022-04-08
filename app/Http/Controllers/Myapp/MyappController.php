@@ -135,18 +135,55 @@ class MyappController extends Controller
 
     public function learn2(Request $request)
     {
-        $d = $this->code;
-        //DD($d);
-        foreach ($d as $key => $value) {
-           echo $key++.' '.$value;
-           echo "<br>";
+        //
+        $view_data = [];
+        if(!$request->ajax()){
+           return view('learn2.index')->with($view_data); 
+        }else{
+        $country = DB::table('states')
+        ->select('countries.name','states.country_id',DB::raw('count(*) as total'))
+        ->groupBy('countries.name')
+        ->groupBy('states.country_id')
+        ->leftjoin('countries', 'countries.id', '=', 'states.country_id')
+        ->get();
+        $view_data['country'] = $country;
+        return view('learn2.list')->with($view_data);
+       }   
+    }
+
+    public function getStates(Request $request)
+    {
+        $states = DB::table('states')
+            ->leftjoin('cities', 'cities.state_id', '=', 'states.id')
+            ->select('states.name','cities.state_id', DB::raw('count(*) as total'))
+            ->groupBy('states.name')
+            ->groupBy('cities.state_id')
+            ->where('country_id', $request->country_id)
+            ->get();
+        
+        if (count($states) > 0) {
+            return response()->json($states);
+        }else{
+            return response()->json(['states' => 'No Data']);
+        }
+    }
+
+    public function getCities(Request $request)
+    {
+        $cities = DB::table('cities')->select('name','state_id')
+            ->where('state_id', $request->state_id)
+            ->get();
+        
+        if (count($cities) > 0) {
+            return response()->json($cities);
+        }else{
+            return response()->json(['states' => 'No Data']);
         }
     }
 
     public function learn3(Request $request)
     {
-        
+        //return view('home.index');
     }
 
-    
 }

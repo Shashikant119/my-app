@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UsersController;
+use App\Http\Controllers\Myapp\PostController;
 use App\Http\Controllers\Myapp\MyappController;
 use App\Http\Controllers\Myapp\BlogController;
 use App\Http\Controllers\Ecommerce\IndexController;
@@ -30,15 +31,14 @@ Route::get('/dashboard', function () {
 require __DIR__.'/auth.php';
 
 Route::get('/users-list',[UsersController::class, 'index'])->name('users-list');
-
 Route::get('/menu-list', [UsersController::class, 'menulist'])->name('menu.list');
 //group prefixes route call
 
 Route::controller(MyappController::class)->group(function () {
     Route::get('/my-app', 'myapp');
     Route::group(['prefix' => 'multi'], function(){
-       Route::get('/' ,'multiplelanguage')->name('multi');
-       Route::post('/save', 'multiplelanguagestore')->name('multi.save');
+        Route::get('/' ,'multiplelanguage')->name('multi');
+        Route::post('/save', 'multiplelanguagestore')->name('multi.save');
     });
     Route::group(['prefix' => 'add-lag'], function(){
         Route::get('/', 'addlanguage')->name('add.lag');
@@ -49,9 +49,22 @@ Route::controller(MyappController::class)->group(function () {
     });
     Route::group(['prefix' => 'learn2'], function(){
         Route::get('/', 'learn2')->name('learn2');
+        Route::get('/get-states', 'getStates')->name('learn2.getStates');
+        Route::get('/get-cities', 'getCities')->name('learn2.getCities');
     });
     Route::group(['prefix' => 'learn3'], function(){
-        Route::get('/', 'learn3')->name('learn2');
+        Route::get('/', 'learn3')->name('learn3');
+    });
+});
+
+//cat post
+
+Route::controller(PostController::class)->group(function(){
+    Route::group(['prefix' => 'learn4'], function(){
+      Route::get('/', 'index')->name('learn4');
+      Route::get('/create', 'create')->name('learn4.create');
+      Route::post('/store', 'store')->name('learn4.store');
+      Route::post('/delete', 'delete')->name('learn4.delete');
     });
 });
 
@@ -68,7 +81,6 @@ Route::controller(BlogController::class)->group(function () {
     });
 });
 
-
 Route::controller(IndexController::class)->group(function () {
    Route::group(['prefix' => 'ecommerce'], function(){
       Route::get('/', 'index')->name('ecommerce');
@@ -81,14 +93,8 @@ Route::get('add-to-cart/{id}', [ProductController::class, 'addToCart'])->name('a
 Route::patch('update-cart', [ProductController::class, 'update'])->name('update.cart');
 Route::delete('remove-from-cart', [ProductController::class, 'remove'])->name('remove.from.cart');
 
-
 Route::get('/products', [ProductController::class, 'productsapi'])->name('products');
-
-
 Route::get('/count',[UsersController::class, 'countuser']);
-
-
 //menu multiple
-
 Route::get('/menu', [MenuController::class, 'getMenu']);
 
