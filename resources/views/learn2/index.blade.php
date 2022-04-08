@@ -37,6 +37,7 @@ function getData(page = 1)
 }
 
 function getCountry(){
+
     var countryId = $('#country').val();
     $('#state').html('');
     $.ajax({
@@ -67,6 +68,6 @@ function myStates(){
         }
     });
 };
-
+  
 </script>
 @stop

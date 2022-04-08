@@ -19,7 +19,7 @@ class PostController extends Controller
      */
     public function __construct()
     {
-        //
+      
     }
 
     public function index(Request $request)
@@ -144,4 +144,8 @@ class PostController extends Controller
         'data' => []
       ]);
     }
+
+
+    //use this next controller
+    
 }

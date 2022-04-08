@@ -147,6 +147,13 @@ class MyappController extends Controller
         ->leftjoin('countries', 'countries.id', '=', 'states.country_id')
         ->get();
         $view_data['country'] = $country;
+        //count 
+        $totalc = DB::table('countries')->count('id');
+        $totaltct = DB::table('cities')->count('id');
+        $totals = DB::table('states')->count('id');
+        $view_data['tc'] = $totalc;
+        $view_data['ts'] = $totals;
+        $view_data['tct'] = $totaltct;
         return view('learn2.list')->with($view_data);
        }   
     }
@@ -183,7 +190,7 @@ class MyappController extends Controller
 
     public function learn3(Request $request)
     {
-        //return view('home.index');
+        return response()->json(['status' => 'okay', 'message' => 'successfully', 'error' => '']);
     }
 
 }

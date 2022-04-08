@@ -2,9 +2,9 @@
   <thead>
     <tr>
       <th>Sr No.</th>
-      <th>Country Name / Total States</th>
-      <th>States Name / Total City</th>
-      <th>Cities</th>
+      <th>Country Name / Total States (Total.C = {{$tc}})</th>
+      <th>States Name / Total City (Total.C = {{$ts}})</th>
+      <th>Cities (Total.C = {{$tct}})</th>
     </tr>
   </thead>
    <tbody>
@@ -27,3 +27,10 @@
     </tr>
       </tbody>
 </table>
+
+<script type="text/javascript">
+$(function () {
+  $("select").select2();
+});
+</script>
+
