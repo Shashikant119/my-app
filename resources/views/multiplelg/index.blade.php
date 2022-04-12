@@ -8,7 +8,7 @@
     padding: 9px;}
 </style>
 
-
+@include('notification.index')
 @section('content')
  <div class="card-body container">
     <form method="post" action="{{route('multi.save')}}" enctype="multipart/form-data">
@@ -82,6 +82,6 @@ $(document).ready(function(){
  });
  
 });
-
+//validation
 </script>  
 @endsection   

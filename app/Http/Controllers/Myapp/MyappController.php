@@ -21,12 +21,9 @@ class MyappController extends Controller
      */
     public function myapp()
     {
-        //model
-        $menu = new \App\Models\Navbar;
-        $menus = $menu->treemenu();
-        DD($menus);
+       
 
-        return view('My-App.index', compact('menus'));
+        return view('My-App.index');
     }
 
     ///multiple language select
@@ -57,10 +54,14 @@ class MyappController extends Controller
 
     public function multiplelanguagestore(Request $request)
     {
+        if($request->get('cat') == null){
+           toastr()->error('Select language Error!');
+           return redirect('/multi'); 
+        }
         $input = $request->all();
         Clanguage::create($input);
         toastr()->success('Data has been saved successfully!');
-        return redirect('/multi')->withInput();
+        return redirect('/multi');
     }
 
     //add language 
@@ -69,9 +70,10 @@ class MyappController extends Controller
         $datest[''] = '';
         $getdata = DB::table('codeslgs')->get();
         foreach ($getdata as $key => $value) {
-           $st = $value->language;
+           $st = json_decode($value->language);
         }
-        $view_data['datest'] = $st;
+        $d = implode(' ',$st);
+        $view_data['datest'] = $d;
 
         //DD($view_data);
         return view('multiplelg.addlg')->with($view_data);

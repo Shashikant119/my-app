@@ -4,17 +4,11 @@
 
             <ul class="nav flex-column sticky-top pl-0 pt-5 mt-3">
 
-                @foreach($menus as $menu)
+            
                     <li class="nav-item">
-                        <a class="nav-link" href="">{{ $menu->menu_name }}
-                        @if(count($menu->childs))
-                            @include('menu.manageChild',['childs' => $menu->childs])
-                        @endif</a>
+                        <a class="nav-link" href="">NAME</a>
                     </li>
-                @endforeach
-           
                
-              
                 <li class="nav-item">
                  
                     <a class="nav-link" href="##" data-toggle="collapse" data-target="#submenu1">DROPDOWN MENU

@@ -17,13 +17,13 @@
         <label>Add language </label>
         <?php
           $d = $datest;
-          $s = ["Laravel","Symfony","CodeIgniter","ZendFramework","FuelPHP","Slim","Phalcon","Aura","angular","vue","Phalcon","CSS","Java","Javascript","Jquery"];
+          /*$s = ["Laravel","Symfony","CodeIgniter","ZendFramework","FuelPHP","Slim","Phalcon","Aura","angular","vue","Phalcon","CSS","Java","Javascript","Jquery"];
 
-          $i = implode(" ",$s);
+          $i = implode(" ",$s);*/
 
          // print_r($i);
         ?>
-        <textarea multiple class="form-control" rows="4" name="language" placeholder="Enter Multiple Language .....">{{$i}}</textarea>
+        <textarea multiple class="form-control" rows="4" name="language" placeholder="Enter Multiple Language .....">{{$datest}}</textarea>
       
         <div class="text-center" style="margin-top:10px">
             <button type="submit" class="btn btn-success">Save</button>
