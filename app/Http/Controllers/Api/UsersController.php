@@ -9,14 +9,23 @@ Use Illuminate\Support\Facades\DB;
 use Auth;
 use Validator;
 use App\Models\User;
+use Illuminate\Support\Str;
+
+date_default_timezone_set("Asia/Kolkata");
 
 class UsersController extends Controller
 {
+    protected $pg = 20;
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
+    function __construct(Request $request)
+    {
+       //$this->middleware('auth');
+    }
+    
     public function userlist()
     {
         $User = User::get()->toJson(JSON_PRETTY_PRINT);
@@ -29,12 +38,10 @@ class UsersController extends Controller
         $fields=$request->validate([
             'name'=>'required|string',
             'email'=>'required|string|unique:users,email',
-            'password'=>'required|string|confirmed'
-            
+            'password'=>'required|string|confirmed' 
         ]);
 
         //return $fields;
-
         $user=User::create([
             'name'=>$fields['name'],
             'email'=>$fields['email'],
@@ -47,8 +54,11 @@ class UsersController extends Controller
             'user'=>$user,
             'token'=>$token
         ];
-
-        return response($response,201);
+        return response([
+            'status' => 'okay',
+            'message' => 'successfully',
+            'data' => $response
+        ]);
     }
 
     public function products()
@@ -57,75 +67,107 @@ class UsersController extends Controller
         return response($products, 200);
     }
 
-    
-
-// webpage will be displayed in your browser
-return;
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+    public function chats(Request $request)
     {
-        //
+        $request_data = $request->all();
+        $user = auth()->user();
+
+        $chats = DB::table('chatboxes')->select('id', 'messages', 'status', 'created_at')
+        ->simplePaginate($this->pg);
+        if(!is_null($chats)){
+            if(!is_null($user)){
+              return response()->json([
+                'status' => 'Okay',
+                'message' => 'Record Found',
+                'page' => $chats->currentPage(),
+                'count' => $chats->count('id'),
+                'user' => $user->id,
+                'chats' => $chats->items()
+              ]); 
+            }
+            else{
+              return response()->json([
+                'status' => 'Okay',
+                'message' => 'Record Found',
+                'page' => $chats->currentPage(),
+                'count' => $chats->count('id'),
+                'user' => 'user not login',
+                'chats' => $chats->items()
+              ]); 
+            }
+        }
+        else{
+            return response()->json([
+               'status' => 'Error',
+               'message' => 'Record Not Found',
+               'data' => []
+            ]);
+        } 
+    }
+    //second api 
+    public function register (Request $request) {
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users',
+            'password' => 'required|string|min:6|confirmed',
+        ]);
+        if ($validator->fails())
+        {
+            return response(['errors'=>$validator->errors()->all()], 422);
+        }
+        $request['password']=Hash::make($request['password']);
+        $request['remember_token'] = Str::random(10);
+        $user = User::create($request->toArray());
+        $token = $user->createToken('Laravel Password Grant Client')->accessToken;
+        $response = ['token' => $token];
+        return response($response, 200);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
+    public function login(Request $request)
     {
-        //
+        $validator = Validator::make($request->all(), [
+        'email' => 'required|string|email|max:255',
+        'password' => 'required|string|min:6|confirmed',
+        ]);
+        if ($validator->fails())
+        {
+            return response(['errors'=>$validator->errors()->all()], 422);
+        }
+        $user = User::where('email', $request->email)->first();
+        if ($user) {
+            if (Hash::check($request->password, $user->password)) {
+                $token = $user->createToken('Laravel Password Grant Client')->accessToken;
+                $response = ['token' => $token];
+                return response($response, 200);
+            } else {
+                $response = ["message" => "Password mismatch"];
+                return response($response, 422);
+            }
+        } else {
+            $response = ["message" =>'User does not exist'];
+            return response($response, 422);
+        }
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
+    public function logout (Request $request) {
+        $token = $request->user()->token();
+        $token->revoke();
+        $response = ['message' => 'You have been successfully logged out!'];
+        return response($response, 200);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
+    /*protected function respondWithToken($token)
     {
-        //
-    }
+        $minutes = auth('api')->factory()->getTTL();
+        $timestamp = now()->addMinute($minutes);
+        $expires_at = date('M d, Y H:i A', strtotime($timestamp));
+        return response()->json([
+            'status' => true,
+            'message' => 'Login successful',
+            'access_token' => $token,
+            'token_type' => 'bearer',
+            'expires_at' => $expires_at
+        ], 200);
+    }*/
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
-    }
 }

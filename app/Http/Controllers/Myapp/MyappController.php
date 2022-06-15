@@ -21,8 +21,6 @@ class MyappController extends Controller
      */
     public function myapp()
     {
-       
-
         return view('My-App.index');
     }
 
@@ -159,7 +157,7 @@ class MyappController extends Controller
         return view('learn2.list')->with($view_data);
        }   
     }
-
+ 
     public function getStates(Request $request)
     {
         $states = DB::table('states')

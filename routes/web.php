@@ -8,6 +8,8 @@ use App\Http\Controllers\Myapp\BlogController;
 use App\Http\Controllers\Ecommerce\IndexController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\MenuController;
+use App\Http\Controllers\Chat\ChatboxController;
+use App\Http\Controllers\FileController;
 
 /*
 |--------------------------------------------------------------------------
@@ -97,4 +99,19 @@ Route::get('/products', [ProductController::class, 'productsapi'])->name('produc
 Route::get('/count',[UsersController::class, 'countuser']);
 //menu multiple
 Route::get('/menu', [MenuController::class, 'getMenu']);
+
+Route::controller(ChatboxController::class)->group(function(){
+    Route::group(['prefix' => 'chat'], function(){
+        Route::get('/', 'index')->name('chat');
+        Route::post('/save', 'sendsms')->name('chat.save');
+    });
+});
+
+//file upload
+Route::controller(FileController::class)->group(function(){
+    Route::group(['prefix' => 'file'], function(){
+        Route::get('/', 'index')->name('file');
+        Route::post('/save', 'save')->name('file.save');
+    });
+});
 
