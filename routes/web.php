@@ -10,6 +10,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\MenuController;
 use App\Http\Controllers\Chat\ChatboxController;
 use App\Http\Controllers\FileController;
+use App\Http\Controllers\Myapp\NewsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -115,3 +116,13 @@ Route::controller(FileController::class)->group(function(){
     });
 });
 
+//news upload
+Route::controller(NewsController::class)->group(function(){
+    Route::group(['prefix' => 'news'], function(){
+      Route::get('/index', 'index')->name('news');
+      Route::get('/create', 'create')->name('news.create');
+      Route::post('/store', 'store')->name('news.store');
+      Route::post('/update', 'update')->name('news.update');
+      Route::post('/delete', 'delete')->name('news.delete');
+    });
+});
